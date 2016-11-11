@@ -38,11 +38,43 @@
         };
 
 
+        // draw with animation
+        var animationTimer;
         var ratioInput = document.querySelector("#ratio");
         ratioInput.oninput = function(){
-            donuts.ratio = this.value / 100;
-            donuts.draw();
+            if(animationTimer){ cancelAnimationFrame(animationTimer); } // cancel previous animation.
+            // var ratio = this.value / 100; // linear animation
+            var ratio = this.value / 100; // Quadratic curve
+
+            function render(step, maxStep){
+
+                // // linear animation
+                // val value = (step / maxStep);
+
+                // reversed quadratic curve
+                var value = step / maxStep;
+                value = 1 - (1 - value) * (1 - value);
+
+                donuts.ratio = ratio * value;
+                donuts.draw();
+                if(step >= maxStep){
+                    // finish animation
+                    return;
+                }
+                // continue animation
+                animationTimer = requestAnimationFrame(render.bind(null, step + 1, maxStep));
+            }
+            // start animation.
+            render(0, 40);
+
         };
+
+        // draw without animation.
+        // ratioInput.oninput = function(){
+        //            donuts.ratio = this.value / 100;
+        //            donuts.draw();
+        // };
+
         e.onpropertychange = ratioInput.oninput; // for IE8
 
         // donuts.draw();
