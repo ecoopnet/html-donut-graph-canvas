@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+
+    <script src="donuts.js"></script>
+
+
+    <script type="application/javascript"><!--
+    var donuts = new DonutsCanvas();
+    console.log("hello");
+
+    window.onload = function(e){
+        var canvas = document.querySelector("#canvas");
+        donuts.canvas = canvas;
+        donuts.emptyColor = "#888";
+        var colorMap = [
+            ['#e60012', 20],
+            ['#f39800', 40],
+            ['#fdd000', 60],
+            ['#f7ea76', 80],
+            ['#b8d447', 100]
+        ];
+
+        donuts.applyColor = function(){
+            var res = '#000';
+            var ratio = this.ratio;
+            for(i in colorMap) {
+                var v = colorMap[i];
+                // colorMap.reverse().(function(v){
+                if (ratio <= v[1] / 100.0) {
+                    return v[0];
+                }
+            }
+            // });
+            return res;
+        };
+
+
+        var ratioInput = document.querySelector("#ratio");
+        ratioInput.oninput = function(){
+            donuts.ratio = this.value / 100;
+            donuts.draw();
+        };
+        e.onpropertychange = ratioInput.oninput; // for IE8
+
+        // donuts.draw();
+        ratioInput.oninput.bind(ratioInput)();
+    }
+    // --></script>
+</head>
+<body>
+<h1>Canvas</h1>
+<canvas id="canvas" width="300" height="300"></canvas>
+<br>
+Input number between 0 and 100.
+<input id="ratio" type="number" maxlength="3" value="50">
+
+</body>
+</html>
