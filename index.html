@@ -8,6 +8,15 @@
 
 
     <script type="application/javascript"><!--
+
+    // requestAnimationFrame polyfill.
+    // http://www.webcreativepark.net/javascript/animations/requestanimationframe/
+    window.requestAnimationFrame = window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.msRequestAnimationFrame;
+
+
     var donuts = new DonutsCanvas();
     console.log("hello");
 
