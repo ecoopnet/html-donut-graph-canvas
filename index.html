@@ -55,16 +55,45 @@
             // var ratio = this.value / 100; // linear animation
             var ratio = this.value / 100; // Quadratic curve
 
+            // http://gizma.com/easing/#quint1
+            function easeInOutQuad(t, b, c, d) {
+                t /= d/2;
+                if (t < 1) return c/2*t*t + b;
+                t--;
+                return -c/2 * (t*(t-2) - 1) + b;
+            }
+
             function render(step, maxStep){
 
                 // // linear animation
                 // val value = (step / maxStep);
 
-                // reversed quadratic curve
-                var value = step / maxStep;
-                value = 1 - (1 - value) * (1 - value);
+                // // reversed quadratic curve
+                // var value = step / maxStep;
+                // value = 1 - (1 - value) * (1 - value);
 
-                donuts.ratio = ratio * value;
+//                var midStep =  Math.floor(maxStep * 0.5)
+//                if(step < midStep){
+//                    // step1: 0% -> 100% (Increase)
+//                    var value = step / midStep;
+//                    value = 1 - (1 - value) * (1 - value);
+//                    donuts.ratio = value;
+//                }else{
+//                    // step2: 100% -> ratio (Decrease)
+//                    var value = (step - midStep) / (maxStep - midStep)
+//                    value = 1 - (1 - value) * (1 - value);
+//                    donuts.ratio = ratio + (1 - ratio) * (1 - value);
+//                }
+
+                var midStep = Math.floor(maxStep * 0.5);
+                if(step < midStep) {
+                    // step1: 0% -> 100% (Increase)
+                    donuts.ratio = easeInOutQuad(step, 0, 1, midStep);
+                }else{
+                    // step2: 100% -> ratio (Decrease)
+                    donuts.ratio = easeInOutQuad(step - midStep, 1, ratio - 1, maxStep - midStep);
+                }
+
                 donuts.draw();
                 if(step >= maxStep){
                     // finish animation
@@ -74,7 +103,7 @@
                 animationTimer = requestAnimationFrame(render.bind(null, step + 1, maxStep));
             }
             // start animation.
-            render(0, 40);
+            render(0, 80);
 
         };
 
