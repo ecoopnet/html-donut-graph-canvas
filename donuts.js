@@ -37,13 +37,27 @@ function DonutsCanvas(){
             var startAngle = originRadian;
 
             ctx.fillStyle = color;
+
+            // draw 2 half donut to make full size donut ( to prevent from filling inner circle on specific old smartphone browser.)
+            // draw first part of a donut.
             ctx.beginPath();
-            var endAngle = Math.PI * 2 * ratio + originRadian;
+            var endAngle = Math.PI * 2 * Math.min(ratio, 0.5) + originRadian;
             ctx.arc(center.x, center.y, innerLength, startAngle, endAngle, false);
             ctx.arc(center.x, center.y, length, endAngle, startAngle, true);
-
             ctx.closePath();
             ctx.fill();
+
+            if(ratio > 0.5) {
+                // draw rest one.
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                var startAngle2 = Math.PI * 2 * 0.5 + originRadian;
+                var endAngle = Math.PI * 2 * ratio + originRadian;
+                ctx.arc(center.x, center.y, innerLength, startAngle2, endAngle, false);
+                ctx.arc(center.x, center.y, length, endAngle, startAngle2, true);
+                ctx.closePath();
+                ctx.fill();
+            }
         }; // .bind(this);
 
         // // fill empty color donut.
