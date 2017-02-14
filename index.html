@@ -14,7 +14,8 @@
     window.requestAnimationFrame = window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame ||
-            window.msRequestAnimationFrame;
+            window.msRequestAnimationFrame ||
+            window.setTimeout;
 
 
     var donuts = new DonutsCanvas();
